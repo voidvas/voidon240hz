@@ -4,6 +4,22 @@ VirtualUser:CaptureController()
 VirtualUser:ClickButton2(Vector2.new())
 end)
 
+local lighting = game.Lighting
+        if lighting:FindFirstChild("ColorCorrection") then
+            lighting:FindFirstChild("ColorCorrection"):Remove()
+        end
+        if lighting:FindFirstChild("Correction") then
+            lighting:FindFirstChild("Correction"):Remove()
+        end
+        if lighting:FindFirstChildOfClass("SunRaysEffect") then
+            lighting:FindFirstChildOfClass("SunRaysEffect"):Remove()
+        end
+        
+        local correction = Instance.new("ColorCorrectionEffect", lighting)
+        correction.Name = "Correction"
+        correction.Saturation = -0.4
+        correction.TintColor = Color3.fromRGB(215, 255, 255)
+        
 local RunService = game:GetService("RunService")
 
 RunService.RenderStepped:Connect(function()
@@ -14,8 +30,8 @@ RunService.RenderStepped:Connect(function()
                 end
                 if game.Players.LocalPlayer.Character.Humanoid:findFirstChild("Bullet"):findFirstChild("Trail").Lifetime < 0.21 then
                     game.Players.LocalPlayer.Character.Humanoid:findFirstChild("Bullet").Trail.Lifetime = 0.21
-                    game.Players.LocalPlayer.Character.Humanoid:findFirstChild("Bullet").Trail.Transparency = NumberSequence.new(0.6)
-                    game.Players.LocalPlayer.Character.Humanoid:findFirstChild("Bullet").Trail.Color = ColorSequence.new(Color3.fromRGB(255,255,255),Color3.fromRGB(255,255,255))
+                    game.Players.LocalPlayer.Character.Humanoid:findFirstChild("Bullet").Trail.Transparency = NumberSequence.new(0)
+                    game.Players.LocalPlayer.Character.Humanoid:findFirstChild("Bullet").Trail.Color = ColorSequence.new(Color3.fromRGB(0,255,0),Color3.fromRGB(255,0,0))
                     game.Players.LocalPlayer.Character.Humanoid:findFirstChild("Bullet").Name = "BulletDone"
                 end
             end
@@ -73,10 +89,6 @@ Uis.InputBegan:Connect(function(Key)
        end
    end
 end)
-
-for _, z in next, game:GetService("Lighting"):GetChildren() do
-    z:Destroy()
-end
 
 Duration = 16;
 local LocalP = game.Players.LocalPlayer
