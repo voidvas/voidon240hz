@@ -368,3 +368,22 @@ rservice.Stepped:Connect(
         )
     end
 )
+
+local function PrintCommands()
+    if rconsoleprint then 
+        rconsolename("VOID ON TOP")
+        rconsoleprint([[
+        
+          __
+         \  $$         / $$                       /$$|
+          \  $$       / $$   /$$$$$$  | $$       | $$|
+           \  $$     / $$   /$$__  $$ | $$    /$$$$$$|
+            \  $$   / $$   | $$  \ $$ | $$  /$$__  $$|
+             \  $$ / $$    | $$  | $$ | $$ | $$  | $$|
+              \  $$$$      |  $$$$$$/ | $$ |  $$$$$$$|
+               \_____       \______/  |___  \_______/
+        
+        ]])
+    end
+end
+PrintCommands()
