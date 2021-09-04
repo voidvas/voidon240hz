@@ -1,24 +1,102 @@
+local Hint = Instance.new("Hint", game.CoreGui)
+Hint.Text = "Wa"
+wait()
+Hint.Text = "Wai"
+wait()
+Hint.Text = "Wait"
+wait()
+Hint.Text = "Waiti"
+wait()
+Hint.Text = "Waitin"
+wait()
+Hint.Text = "Waiting"
+wait()
+Hint.Text = "Waiting "
+wait()
+Hint.Text = "Waiting t"
+wait()
+Hint.Text = "Waiting to"
+wait()
+Hint.Text = "Waiting to load"
+wait()
+Hint.Text = "Waiting to load."
+wait()
+Hint.Text = "Waiting to load.."
+wait()
+Hint.Text = "Waiting to load..."
+wait(1)
+Hint.Text = "Waiting to load.."
+wait(1)
+Hint.Text = "Waiting to load..."
+wait(1)
+Hint.Text = "Waiting to load.."
+wait(1)
+Hint.Text = "Waiting to load..."
+wait(1)
+Hint.Text = "Waiting to load.."
+wait(1)
+Hint.Text = "Waiting to load."
+wait()
+Hint.Text = "Waiting to load"
+wait()
+Hint.Text = "Waiting to loa"
+wait()
+Hint.Text = "Waiting to l"
+wait()
+Hint.Text = "Waiting to "
+wait()
+Hint.Text = "Waiting to"
+wait()
+Hint.Text = "Waiting t"
+wait()
+Hint.Text = "Waiting "
+wait()
+Hint.Text = "Waiting"
+wait()
+Hint.Text = "Waiting"
+wait()
+Hint.Text = "Waitin"
+wait()
+Hint.Text = "Waiti"
+wait()
+Hint.Text = "Wait"
+wait()
+Hint.Text = "Wai"
+wait()
+Hint.Text = "Wa"
+wait()
+Hint.Text = "W"
+wait()
+Hint.Text = ""
+wait()
+
 local VirtualUser=game:service'VirtualUser'
 game:service'Players'.LocalPlayer.Idled:connect(function()
 VirtualUser:CaptureController()
 VirtualUser:ClickButton2(Vector2.new())
 end)
 
-local lighting = game.Lighting
-        if lighting:FindFirstChild("ColorCorrection") then
-            lighting:FindFirstChild("ColorCorrection"):Remove()
-        end
-        if lighting:FindFirstChild("Correction") then
-            lighting:FindFirstChild("Correction"):Remove()
-        end
-        if lighting:FindFirstChildOfClass("SunRaysEffect") then
-            lighting:FindFirstChildOfClass("SunRaysEffect"):Remove()
-        end
-        
-        local correction = Instance.new("ColorCorrectionEffect", lighting)
-        correction.Name = "Correction"
-        correction.Saturation = -0.4
-        correction.TintColor = Color3.fromRGB(215, 255, 255)
+for _,v in pairs(workspace:GetDescendants()) do
+if v.Name == "PlantColor" then
+v.BrickColor = BrickColor.new(324)
+else
+if v.Name == "PlantColor1" then
+v.BrickColor = BrickColor.new(328)
+else
+if v.Name == "PlantColor2" then
+v.BrickColor = BrickColor.new(323)
+else
+if v.Name == "PlantColor3" then
+v.BrickColor = BrickColor.new(324)
+end
+end
+end
+end
+end
+
+for _, z in next, game:GetService("Lighting"):GetChildren() do
+    z:Destroy()
+end
         
 local RunService = game:GetService("RunService")
 
@@ -30,8 +108,8 @@ RunService.RenderStepped:Connect(function()
                 end
                 if game.Players.LocalPlayer.Character.Humanoid:findFirstChild("Bullet"):findFirstChild("Trail").Lifetime < 0.21 then
                     game.Players.LocalPlayer.Character.Humanoid:findFirstChild("Bullet").Trail.Lifetime = 0.21
-                    game.Players.LocalPlayer.Character.Humanoid:findFirstChild("Bullet").Trail.Transparency = NumberSequence.new(0)
-                    game.Players.LocalPlayer.Character.Humanoid:findFirstChild("Bullet").Trail.Color = ColorSequence.new(Color3.fromRGB(0,255,0),Color3.fromRGB(255,0,0))
+                    game.Players.LocalPlayer.Character.Humanoid:findFirstChild("Bullet").Trail.Transparency = NumberSequence.new(0.6)
+                    game.Players.LocalPlayer.Character.Humanoid:findFirstChild("Bullet").Trail.Color = ColorSequence.new(Color3.fromRGB(255,255,255),Color3.fromRGB(255,255,255))
                     game.Players.LocalPlayer.Character.Humanoid:findFirstChild("Bullet").Name = "BulletDone"
                 end
             end
@@ -387,3 +465,290 @@ local function PrintCommands()
     end
 end
 PrintCommands()
+
+local Players = game:GetService('Players')
+local UserInputService = game:GetService('UserInputService')
+local RunService = game:GetService('RunService')
+local Player = Players.LocalPlayer
+local FeLooping, FlingTime, HeadFlinging, ToolWeld, CharWeld = false, 0.5, true, true, true
+local Spammer, SpamMessage, Delay = false, "ez", 0.2
+local FeTarget;
+local FePart;
+
+local meta = getrawmetatable(game)
+local namecall = meta.__namecall
+setreadonly(meta,false)
+
+meta.__namecall = newcclosure(function(self,...)
+    local method = getnamecallmethod()
+    local args = {...}
+    if method == 'Destroy' and tostring(self) == 'BodyVelocity' then
+        return wait(9e9)
+    end
+    if method == "LoadAnimation" then
+        if FeLooping then
+            return wait(9e9)
+        end
+    end
+    return namecall(self,...)
+end)
+
+setreadonly(meta,true)
+
+local function findp(name)
+    local t = {}
+    if name:lower() == "all" then
+        for i,v in pairs(Players:GetPlayers()) do
+            table.insert(t,v)
+        end
+        return t
+    elseif name:lower() == "others" then
+        for i,v in pairs(Players:GetPlayers()) do
+            if v ~= Player then
+                table.insert(t,v)
+            end
+        end
+        return t
+    elseif name:lower() == "me" then
+        table.insert(t,Players)
+        return t
+    else
+        for _,player in pairs(Players:GetPlayers()) do
+            if name:lower() == player.Name:sub(1,name:len()):lower() then
+                table.insert(t,player)
+            end
+        end
+        return t
+    end
+    return nil
+end
+
+local function WeldTool(Tool, Part)
+    local Handle = Tool.Handle
+    if Handle and Part then
+        local Weld = Instance.new("ManualWeld")
+        Weld.Part0 = Handle
+        Weld.Part1 = Part
+        Weld.C0 = CFrame.new()
+        Weld.C1 = Part.CFrame:inverse() * Handle.CFrame
+        Weld.Parent = Handle
+        return;
+    end
+end
+
+local function Chat(str)
+    game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(tostring(str),"All")
+end
+
+-- UI
+
+local Library = loadstring(game:HttpGet('https://pastebin.com/raw/d6rxRXPU', true))()
+
+local Window = Library:CreateWindow('Fe-Loop')
+local TargetFolder = Window:AddFolder('Target')
+local SettingsFolder = Window:AddFolder('Settings')
+local SpamFolder = Window:AddFolder('Spam')
+
+TargetFolder:AddBox({text = "Target Name", flag = "tname", value = "Name", callback = function(str)
+    if findp(str) and findp(str)[1] then
+        FeTarget = findp(str)[1]
+        print("target is now set to " .. FeTarget.Name)
+    end
+end})
+
+TargetFolder:AddToggle({text = "Fe-Loop", flag = "felooping", state = false, callback = function(bool)
+    FeLooping = bool
+    if FeLooping == true then
+        Player.Character:BreakJoints()
+    end
+    print("feloop is now set to " .. tostring(bool))
+end})
+
+SettingsFolder:AddBox({text = "Fling Time", flag = "fti", value = "Time (0.1)", callback = function(str)
+    print("time is now set to " .. str)
+end})
+
+SettingsFolder:AddToggle({text = "Head Fling", flag = "hf", state = true, callback = function(bool)
+    HeadFling = bool
+    print("head fling is now set to " .. tostring(bool))
+end})
+
+SettingsFolder:AddToggle({text = "Tool Weld", flag = "tw", state = true, callback = function(bool)
+    ToolWeld = bool
+    print("tool weld is now set to " .. tostring(bool))
+end})
+
+SettingsFolder:AddToggle({text = "Char Weld", flag = "cw", state = true, callback = function(bool)
+    ToolWeld = bool
+    print("char weld is now set to " .. tostring(bool))
+end})
+
+SpamFolder:AddToggle({text = "Spam", flag = "spaa", state = false, callback = function(bool)
+    Spammer = bool
+    print("spammer is now set to " .. tostring(bool))
+end})
+
+SpamFolder:AddBox({text = "Spam Message", flag = "spa", value = "Message", callback = function(str)
+    SpamMessage = str
+    print("message is now set to " .. str)
+end})
+
+SpamFolder:AddBox({text = "Delay", flag = "spad", value = "Spam Delay (0.2)", callback = function(str)
+    if tonumber(str) then
+        Delay = tonumber(str)
+    end
+    print("spam delay is now set to " .. str)
+end})
+
+Window:AddBind({text = "Toggle UI", key = "RightShift", callback = function() Library:Close() end})
+
+Library:Init()
+
+-- Main loop functions
+
+Player.CharacterAdded:Connect(function(NewChar)
+    if FeLooping then
+        NewChar:WaitForChild("Humanoid")
+        NewChar:WaitForChild("Right Leg")
+        NewChar["Right Leg"]:Remove()
+        NewChar:WaitForChild("Animate")
+        local NewHum = NewChar.Humanoid:Clone()
+        NewChar.Humanoid:Remove()
+        NewHum.Parent = NewChar
+        NewChar.Animate.Disabled = true
+        NewChar:WaitForChild("HumanoidRootPart")
+        if CharWeld then
+            for _, Part in next, NewChar:GetChildren() do
+                if Part and Part:IsA'BasePart' then
+                    Part.FrontSurface = Enum.SurfaceType.Weld
+                    Part.LeftSurface = Enum.SurfaceType.Weld
+                    Part.RightSurface = Enum.SurfaceType.Weld
+                    Part.TopSurface = Enum.SurfaceType.Weld
+                    Part.BottomSurface = Enum.SurfaceType.Weld
+                    Part.BackSurface = Enum.SurfaceType.Weld
+                end 
+            end
+        end
+    end
+end)
+
+RunService.Stepped:Connect(function()
+    if FeLooping and FeTarget and FeTarget.Character then
+        local TargetPart = FeTarget.Character:FindFirstChild("HumanoidRootPart") or FeTarget.Character:FindFirstChild("Torso")
+        local Root = Player.Character:FindFirstChild("HumanoidRootPart") or Player.Character:FindFirstChild("Torso")
+        local FlingPart;
+        if HeadFlinging then
+            FlingPart = FeTarget.Character:FindFirstChild("Right Arm") or FeTarget.Character:FindFirstChild("Head")
+        else
+            FlingPart = FeTarget.Character:FindFirstChild("Right Arm")
+        end
+        for _, Tool in next, Player.Backpack:GetChildren() do
+            Tool.Parent = Player.Character
+            Tool:GetPropertyChangedSignal("Parent"):wait()
+            if ToolWeld then
+                pcall(function()
+                    WeldTool(Tool, FlingPart)
+                end)
+            end
+        end
+        if TargetPart and Root then
+            Root.CFrame = TargetPart.CFrame * CFrame.new(0,0,-math.random(0.1, 1.9))
+            wait(tonumber(FlingTime))
+            Root.CFrame = FlingPart.CFrame
+            wait()
+            Root.CFrame = Root.CFrame * CFrame.new(0,3,0)
+        end
+    end
+end)
+
+coroutine.resume(coroutine.create(function()
+    while wait(Delay) do
+        if Spammer then
+            Chat(SpamMessage)
+        end
+    end
+end))
+
+Hint.Text = "F"
+wait()
+Hint.Text = "Fi"
+wait()
+Hint.Text = "Fin"
+wait()
+Hint.Text = "Fini"
+wait()
+Hint.Text = "Finis"
+wait()
+Hint.Text = "Finish"
+wait()
+Hint.Text = "Finishe"
+wait()
+Hint.Text = "Finished"
+wait()
+Hint.Text = "Finished!"
+wait(2)
+Hint.Text = "Finished"
+wait()
+Hint.Text = "Finishe"
+wait()
+Hint.Text = "Finish"
+wait()
+Hint.Text = "Finis"
+wait()
+Hint.Text = "Fini"
+wait()
+Hint.Text = "Fin"
+wait()
+Hint.Text = "Fi"
+wait()
+Hint.Text = "F"
+wait()
+Hint.Text = ""
+wait()
+Hint.Text = "v"
+wait()
+Hint.Text = "vo"
+wait()
+Hint.Text = "voi"
+wait()
+Hint.Text = "void"
+wait()
+Hint.Text = "void "
+wait()
+Hint.Text = "void o"
+wait()
+Hint.Text = "void on"
+wait()
+Hint.Text = "void on t"
+wait()
+Hint.Text = "void on to"
+wait()
+Hint.Text = "void on top"
+wait()
+Hint.Text = "void on top!"
+wait(2)
+Hint.Text = "void on top"
+wait()
+Hint.Text = "void on to"
+wait()
+Hint.Text = "void on t"
+wait()
+Hint.Text = "void on "
+wait()
+Hint.Text = "void on"
+wait()
+Hint.Text = "void o"
+wait()
+Hint.Text = "void "
+wait()
+Hint.Text = "void"
+wait()
+Hint.Text = "voi"
+wait()
+Hint.Text = "vo"
+wait()
+Hint.Text = "v"
+wait()
+Hint.Text = ""
+wait()
+Hint:Destroy()
