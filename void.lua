@@ -117,6 +117,87 @@ RunService.RenderStepped:Connect(function()
     end
 end)
 
+local Players, RService = game:GetService"Players", game:GetService"RunService";
+local Client, PGui, UD2 = Players.LocalPlayer, Players.LocalPlayer:WaitForChild"PlayerGui", UDim2.new;
+
+RService.RenderStepped:Connect(function()
+    if PGui and PGui:FindFirstChild"HUD" and PGui.HUD:FindFirstChild"Groups" then 
+        local Label, Tool = PGui.HUD.Groups, Client.Character:FindFirstChildOfClass"Tool"
+        pcall(function()
+            if Label then 
+                Label.Visible = false
+            end
+        end)
+    end
+end)
+
+local Players, RService = game:GetService"Players", game:GetService"RunService";
+local Client, PGui, UD2 = Players.LocalPlayer, Players.LocalPlayer:WaitForChild"PlayerGui", UDim2.new;
+
+RService.RenderStepped:Connect(function()
+    if PGui and PGui:FindFirstChild"HUD" and PGui.HUD:FindFirstChild"Shop" then 
+        local Label, Tool = PGui.HUD.Shop, Client.Character:FindFirstChildOfClass"Tool"
+        pcall(function()
+            if Label then 
+                Label.Visible = false
+            end
+        end)
+    end
+end)
+
+local Players, RService = game:GetService"Players", game:GetService"RunService";
+local Client, PGui, UD2 = Players.LocalPlayer, Players.LocalPlayer:WaitForChild"PlayerGui", UDim2.new;
+
+RService.RenderStepped:Connect(function()
+    if PGui and PGui:FindFirstChild"HUD" and PGui.HUD:FindFirstChild"Mute" then 
+        local Label, Tool = PGui.HUD.Mute, Client.Character:FindFirstChildOfClass"Tool"
+        pcall(function()
+            if Label then 
+                Label.Visible = false
+            end
+        end)
+    end
+end)
+
+game:GetService("StarterGui"):SetCore('ChatWindowPosition', UDim2.new(0.7, 0, 0.7, 0))
+
+local Players, SGui = game:GetService("Players"), game:GetService("StarterGui");
+local Client, NColor3, UD, UD2 = Players.LocalPlayer, Color3.new, UDim.new, UDim2.new
+
+local function ChatSpy()
+   local ChatSpyFrame = Client.PlayerGui.Chat.Frame
+   ChatSpyFrame.ChatChannelParentFrame.Visible = true
+   ChatSpyFrame.ChatBarParentFrame.Position = ChatSpyFrame.ChatChannelParentFrame.Position + UD2(UD(), ChatSpyFrame.ChatChannelParentFrame.Size.Y)
+end
+ChatSpy()
+
+getgenv().ShowHiddenMsg = function(T, C)
+   SGui:SetCore("ChatMakeSystemMessage", {
+       Text = T;
+       Color = C;
+   })
+end
+getgenv().Spy = function(Target)
+   Target.Chatted:Connect(function(Msg)
+       if string.find(Msg, "/e ") or string.find(Msg, "/w ") or string.find(Msg, "/whisper ") then
+           ShowHiddenMsg("".."["..tostring(Target).."]: "..Msg, NColor3(255,255,255)) -- https://www.rapidtables.com/web/color/RGB_Color.html if you want to change the color of the hidden msg's
+       end
+   end)
+end
+
+local GP = Players:GetPlayers()
+for i = 1, #GP do
+   local Plr = GP[i]
+   if tostring(Plr) then
+       Spy(Plr)
+   end
+end
+Players.PlayerAdded:Connect(function(P)
+   if tostring(P) then
+       Spy(P)
+   end
+end)
+
 game.Players.LocalPlayer.Character.Humanoid.StateChanged:Connect(function(old, new)
     if new == Enum.HumanoidStateType.FallingDown or new == Enum.HumanoidStateType.PlatformStanding then
 	    game.Players.LocalPlayer.Character.Humanoid.PlatformStand = false
@@ -147,7 +228,7 @@ function StateChangedEvent(T, Changed)
    if AntiGH == true then
        if Client and Client.Character and Client.Character:FindFirstChildOfClass"Humanoid" then
            if Changed == Enum.HumanoidStateType.FallingDown or Changed == Enum.HumanoidStateType.PlatformStanding then
-               Client.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Running);Client.Character.Humanoid.PlatformStand = false -- Credits to Aidez for this part
+               Client.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Running);Client.Character.Humanoid.PlatformStand = false
            end
        end
    end
@@ -198,7 +279,6 @@ local prefix = ""
 local cmds
 local resetkey = "r"
 local infstam = true
-local dsky = false
 local ac = false
 local noclip = false
 local rejoin = false
@@ -289,7 +369,7 @@ function anticlaim()
     lp.Character.ChildAdded:Connect(
         function(instance)
             if ac then
-                if instance.Name ~= "nillingprocessigbecausethisisalongnameeitherwaystillworks" and instance:IsA "Tool" then
+                if instance.Name ~= "lol" and instance:IsA "Tool" then
                     instance:Destroy()
                     wait(0.1)
                     instance:Destroy()
@@ -301,7 +381,7 @@ function anticlaim()
         function(instance)
             local toolnames_ = {}
             table.insert(toolnames_, instance.Name)
-            instance.Name = "nillingprocessigbecausethisisalongnameeitherwaystillworks"
+            instance.Name = "lol"
             wait()
             instance.Name = toolnames_[1]
         end
@@ -365,11 +445,6 @@ lp.Chatted:Connect(
             if args[2] and args[2] ~= "" or " " then end
             Workspace.CurrentCamera.FieldOfView = tonumber(args[2])
             notif("FieldOfView", "Changed To" .. " " .. tonumber(args[2]), 2)
-        end
-        if args[1] == prefix .. "dsky" then
-         for _, z in next, game:GetService("Lighting"):GetChildren() do
-          z:Destroy()
-         end
         end
         if args[1] == prefix .. "infstam" then
             infstam = not infstam
