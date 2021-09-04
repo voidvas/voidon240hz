@@ -447,25 +447,6 @@ rservice.Stepped:Connect(
     end
 )
 
-local function PrintCommands()
-    if rconsoleprint then 
-        rconsolename("VOID ON TOP")
-        rconsoleprint([[
-        
-          __
-         \  $$         / $$                       /$$|
-          \  $$       / $$   /$$$$$$  | $$       | $$|
-           \  $$     / $$   /$$__  $$ | $$    /$$$$$$|
-            \  $$   / $$   | $$  \ $$ | $$  /$$__  $$|
-             \  $$ / $$    | $$  | $$ | $$ | $$  | $$|
-              \  $$$$      |  $$$$$$/ | $$ |  $$$$$$$|
-               \_____       \______/  |___  \_______/
-        
-        ]])
-    end
-end
-PrintCommands()
-
 local Players = game:GetService('Players')
 local UserInputService = game:GetService('UserInputService')
 local RunService = game:GetService('RunService')
@@ -540,8 +521,6 @@ local function Chat(str)
     game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(tostring(str),"All")
 end
 
--- UI
-
 local Library = loadstring(game:HttpGet('https://pastebin.com/raw/d6rxRXPU', true))()
 
 local Window = Library:CreateWindow('Fe-Loop')
@@ -603,8 +582,6 @@ end})
 Window:AddBind({text = "Toggle UI", key = "RightShift", callback = function() Library:Close() end})
 
 Library:Init()
-
--- Main loop functions
 
 Player.CharacterAdded:Connect(function(NewChar)
     if FeLooping then
